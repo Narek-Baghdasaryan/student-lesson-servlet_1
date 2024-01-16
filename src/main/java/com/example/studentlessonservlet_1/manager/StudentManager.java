@@ -25,6 +25,7 @@ public class StudentManager {
                                .surname(resultSet.getString("surname"))
                                .email(resultSet.getString("email"))
                                .age(resultSet.getInt("age"))
+                               .picName(resultSet.getString("pic_name"))
                                .lesson(lessonManager.getLessonsById(resultSet.getInt("lesson_id")))
                        .build());
            }
@@ -35,22 +36,24 @@ public class StudentManager {
     }
 
     public void add(Student student) {
-        String sql = "INSERT INTO students(name,surname,email,age,lesson_id) VALUES(?,?,?,?,?)";
-      try (PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
-          preparedStatement.setString(1, student.getName());
-          preparedStatement.setString(2, student.getSurname());
-          preparedStatement.setString(3, student.getEmail());
-          preparedStatement.setInt(4, student.getAge());
-          preparedStatement.setInt(5, student.getLesson().getId());
-          preparedStatement.executeUpdate();
-          ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-          if (generatedKeys.next()){
-              int id = generatedKeys.getInt(1);
-              student.setId(id);
-          }
-      } catch (SQLException e) {
-          throw new RuntimeException(e);
-      }
+        String sql = "INSERT INTO students(name,surname,email, age,pic_name, lesson_id) VALUES(?,?,?,?,?,?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setString(1, student.getName());
+            preparedStatement.setString(2, student.getSurname());
+            preparedStatement.setString(3, student.getEmail());
+            preparedStatement.setInt(4, student.getAge());
+            preparedStatement.setString(5, student.getPicName());
+            preparedStatement.setInt(6, student.getLesson().getId());
+            preparedStatement.executeUpdate();
+            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                int id = generatedKeys.getInt(1);
+                student.setId(id);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void delete(int id) {
@@ -61,5 +64,4 @@ public class StudentManager {
            throw new RuntimeException(e);
        }
     }
-
 }

@@ -19,6 +19,7 @@ Student | <a href="/addStudent">Add Student</a>
 <table border="1px">
     <tr>
         <th>Id</th>
+        <th>Picture</th>
         <th>Name</th>
         <th>Surname</th>
         <th>Email</th>
@@ -31,12 +32,22 @@ Student | <a href="/addStudent">Add Student</a>
 
     <tr>
         <td><%=student.getId()%></td>
+        <td>
+            <% if (student.getPicName() != null) { %>
+            <img src="/downloadImage?imageName=<%=student.getPicName()%>" width="50">
+            <%} else {%>
+            <span>No Picture</span>
+            <%}%>
+        </td>
         <td><%=student.getName()%></td>
         <td><%=student.getSurname()%></td>
         <td><%=student.getEmail()%></td>
         <td><%=student.getAge()%></td>
         <td><%=student.getLesson().getName()%></td>
         <td><a href="/deleteStudent?id=<%=student.getId()%>">delete</a> </td>
+
+
+
     </tr>
         <%}
     }
